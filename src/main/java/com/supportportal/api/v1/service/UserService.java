@@ -1,7 +1,6 @@
 package com.supportportal.api.v1.service;
 
 import com.supportportal.api.v1.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
