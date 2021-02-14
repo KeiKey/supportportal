@@ -1,4 +1,4 @@
-package com.supportportal.supportportal.controller;
+package com.supportportal.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 

@@ -1,4 +1,4 @@
-package com.supportportal.supportportal.service;
+package com.supportportal.service;
 
 import org.springframework.stereotype.Service;
 

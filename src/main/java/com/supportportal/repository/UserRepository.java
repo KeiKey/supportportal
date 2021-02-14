@@ -1,4 +1,4 @@
-package com.supportportal.supportportal.repository;
+package com.supportportal.repository;
 
 import org.springframework.stereotype.Repository;
 
