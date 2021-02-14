@@ -1,4 +1,4 @@
-package com.supportportal.model;
+package com.supportportal.api.v1.model;
 
 import lombok.*;
 
@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 public class User implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
@@ -30,4 +31,5 @@ public class User implements Serializable {
     private String role;
     private boolean isActive;
     private boolean isNotLocked;
+
 }
