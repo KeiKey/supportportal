@@ -13,4 +13,8 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+    public String register() {
+        return "Success user service";
+    }
 }
