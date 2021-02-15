@@ -1,15 +1,21 @@
 package com.supportportal.api.v1.utlity;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.JWTVerifier;
 import com.supportportal.api.v1.model.UserPrincipal;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static com.supportportal.api.v1.constant.SecurityConstant.*;
+import static java.util.Arrays.stream;
 
 public class JwtTokenProvider {
 
@@ -33,6 +39,27 @@ public class JwtTokenProvider {
                 .withArrayClaim(AUTHORITIES, claims)
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(HMAC512(secret.getBytes()));
+    }
+
+    public List<GrantedAuthority> getAuthorities(String token) {
+        String[] claims = getClaimsFromToken(token);
+        return stream(claims).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
+
+    private String[] getClaimsFromToken(String token) {
+        JWTVerifier verifier = getJWTVerifier();
+        return verifier.verify(token).getClaim(AUTHORITIES).asArray(String.class);
+    }
+
+    private JWTVerifier getJWTVerifier() {
+        JWTVerifier verifier;
+        try {
+            Algorithm algorithm = HMAC512(secret);
+            verifier = JWT.require(algorithm).withIssuer(GET_ARRAYS_KEI).build();
+        } catch (JWTVerificationException exception) {
+            throw new JWTVerificationException(TOKEN_CANNOT_BE_VERIFIED);
+        }
+        return verifier;
     }
 
     private String[] getClaimsFromUser(UserPrincipal userPrincipal) {
