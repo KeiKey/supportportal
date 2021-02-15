@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 import com.supportportal.api.v1.model.UserPrincipal;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,6 +45,15 @@ public class JwtTokenProvider {
     public List<GrantedAuthority> getAuthorities(String token) {
         String[] claims = getClaimsFromToken(token);
         return stream(claims).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
+
+    public boolean isTokenValid(String username, String token) {
+        JWTVerifier verifier = getJWTVerifier();
+        return StringUtils.isNotEmpty(username) && !isTokenExpired(verifier, token);
+    }
+
+    private boolean isTokenExpired(JWTVerifier verifier, String token) {
+        return false;
     }
 
     private String[] getClaimsFromToken(String token) {
